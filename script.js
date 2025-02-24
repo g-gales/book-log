@@ -12,7 +12,7 @@ import log from "loglevel";
 //Variables
 const bookTitleInput = document.getElementById("bookTitleInput");
 const bookAuthorInput = document.getElementById("bookAuthorInput");
-const bookGenrenput = document.getElementById("bookGenreInput");
+const bookGenreInput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
 
@@ -91,10 +91,13 @@ async function renderBooks() {
         <p><strong>Rating:</strong> ${
           bookData.read
             ? `${bookData.rating}/5`
-            : `Not yet rated - Rate Now: 
-              <input type="number" min="1" max="5" step="1" placeholder="1-5" id="rate-${book.id}" />
-              <button id="submit-${book.id}">Rate</button>`
-        }</p> 
+            : `Not yet rated - Rate Now!
+            <div class="book-rating-input">
+         <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
+         <button id="submit-${book.id}">Submit</button>
+       </div>`
+        }</p>
+
       </article>
       </article>
     `;
@@ -129,18 +132,22 @@ async function updateBookRating(bookId, rating) {
 
 //Add book
 addBookBtn.addEventListener("click", async () => {
-  const book = bookTitleInput.value.trim();
-  if (book) {
-    const bookTitle = sanitizeInput(bookTitleInput.value.trim());
+  const title = bookTitleInput.value.trim();
+  const author = bookAuthorInput.value.trim();
+  const genre = bookGenreInput.value.trim();
 
-    if (bookTitle) {
-      await addBookToFirestore(bookTitle);
-      renderBooks();
-      bookTitleInput.value = "";
-    }
+  if (title && author && genre) {
+    const bookTitle = sanitizeInput(title);
+    const bookAuthor = sanitizeInput(author);
+    const bookGenre = sanitizeInput(genre);
+
+    await addBookToFirestore(bookTitle, bookAuthor, bookGenre);
+    bookTitleInput.value = "";
+    bookAuthorInput.value = "";
+    bookGenreInput.value = "";
     renderBooks();
   } else {
-    alert("Please enter a book!");
+    alert("Please fill out all fields!");
   }
 });
 

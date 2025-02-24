@@ -85,10 +85,12 @@ async function renderBooks() {
     //Adds a new book item, if the book is yet rated, adds an input to rate it
     bookItem.innerHTML = `
       <article>
-        <h3>${bookData.title}</h3>
-        <p><strong>Author:</strong> ${bookData.author}</p>
-        <p><strong>Genre:</strong> ${genreMap[bookData.genre] || "Unknown"}</p>
-        <p><strong>Rating:</strong> ${
+        <div class="book-header">
+          <h3 class="book-title">${bookData.title}</h3>
+          <p class="book-author">By: ${bookData.author}</p>
+        </div>
+        <p class="book-genre"> ${genreMap[bookData.genre] || "Unknown"}</p>
+        <p class="book-rating"><strong>Rating:</strong> ${
           bookData.read
             ? `${bookData.rating}/5`
             : `Not yet rated - Rate Now!
@@ -135,13 +137,11 @@ addBookBtn.addEventListener("click", async (event) => {
   const title = bookTitleInput.value.trim();
   const author = bookAuthorInput.value.trim();
   const genre = bookGenreInput.value.trim();
-  console.log(title, author, genre);
 
   if (title && author && genre) {
     const bookTitle = sanitizeInput(title);
     const bookAuthor = sanitizeInput(author);
     const bookGenre = sanitizeInput(genre);
-    console.log(bookTitle, bookAuthor, bookGenre);
 
     await addBookToFirestore(bookTitle, bookAuthor, bookGenre);
     bookTitleInput.value = "";

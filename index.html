@@ -11,14 +11,22 @@
     <main>
       <div class="container">
         <h2>Enter a New Book</h2>
-        <div>
+        <div class="form-container">
           <label for="bookTitleInput">Title</label>
-          <input type="text" name="bookTitleInput" id="bookTitleInput" />
+          <input
+            type="text"
+            name="bookTitleInput"
+            id="bookTitleInput"
+            placeholder="Enter the book title" />
           <label for="bookAuthorInput">Author</label>
-          <input type="text" name="bookAuthorInput" id="bookAuthorInput" />
+          <input
+            type="text"
+            name="bookAuthorInput"
+            id="bookAuthorInput"
+            placeholder="Enter the author's name" />
           <label for="bookGenreInput">Genre</label>
           <select name="bookGenreInput" id="bookGenreInput">
-            <option value="" selected></option>
+            <option value="" selected disabled>Select a Genre</option>
             <option value="fantasy">Fantasy</option>
             <option value="hfiction">Historical Fiction</option>
             <option value="mystthrill">Mystery/Thriller</option>

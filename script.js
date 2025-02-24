@@ -135,11 +135,13 @@ addBookBtn.addEventListener("click", async () => {
   const title = bookTitleInput.value.trim();
   const author = bookAuthorInput.value.trim();
   const genre = bookGenreInput.value.trim();
+  console.log(title, author, genre);
 
   if (title && author && genre) {
     const bookTitle = sanitizeInput(title);
     const bookAuthor = sanitizeInput(author);
     const bookGenre = sanitizeInput(genre);
+    console.log(bookTitle, bookAuthor, bookGenre);
 
     await addBookToFirestore(bookTitle, bookAuthor, bookGenre);
     bookTitleInput.value = "";

@@ -9,9 +9,11 @@
     <header><h2>Book Log</h2></header>
     <main>
       <div class="container">
-        <label for="bookInput"><h2>Enter a Book</h2></label>
-        <input type="text" name="bookInput" id="bookInput" />
-        <button id="addBookBtn">Add Book</button>
+        <form>
+          <label for="bookTitleInput">Enter a Book</label>
+          <input type="text" name="bookTitleInput" id="bookTitleInput" />
+          <input id="addBookBtn" type="submit" value="Add Book" />
+        </form>
         <ul id="bookList"></ul>
       </div>
       <div id="chatbot-container">

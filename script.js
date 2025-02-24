@@ -10,7 +10,7 @@ import {
 import log from "loglevel";
 
 //Variables
-const bookInput = document.getElementById("bookInput");
+const bookTitleInput = document.getElementById("bookTitleInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
 
@@ -71,14 +71,14 @@ async function renderBooks() {
 
 //Add book
 addBookBtn.addEventListener("click", async () => {
-  const book = bookInput.value.trim();
+  const book = bookTitleInput.value.trim();
   if (book) {
-    const bookTitle = sanitizeInput(bookInput.value.trim());
+    const bookTitle = sanitizeInput(bookTitleInput.value.trim());
 
     if (bookTitle) {
       await addBookToFirestore(bookTitle);
       renderBooks();
-      bookInput.value = "";
+      bookTitleInput.value = "";
     }
     renderBooks();
   } else {

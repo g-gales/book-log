@@ -24,6 +24,17 @@ var apiKey;
 var genAI;
 var model;
 
+//Genre map to properly display genre title
+const genreMap = {
+  fantasy: "Fantasy",
+  hfiction: "Historical Fiction",
+  mystthrill: "Mystery/Thriller",
+  nfiction: "Non-Fiction",
+  romance: "Romance",
+  scifi: "SciFi",
+  selfhelp: "Self Help",
+};
+
 //Firebase
 //Config for Firebase
 const firebaseConfig = {
@@ -71,22 +82,24 @@ async function renderBooks() {
     const bookItem = document.createElement("li");
     bookItem.id = book.id;
     bookItem.tabIndex = 0;
+    //Adds a new book item, if the book is yet rated, adds an input to rate it
     bookItem.innerHTML = `
       <article>
         <h3>${bookData.title}</h3>
         <p><strong>Author:</strong> ${bookData.author}</p>
-        <p><strong>Genre:</strong> ${bookData.genre}</p>
-         <p><strong>Rating:</strong> ${
-           bookData.read
-             ? `${bookData.rating}/5`
-             : `Not yet rated - Rate Now: 
+        <p><strong>Genre:</strong> ${genreMap[bookData.genre] || "Unknown"}</p>
+        <p><strong>Rating:</strong> ${
+          bookData.read
+            ? `${bookData.rating}/5`
+            : `Not yet rated - Rate Now: 
               <input type="number" min="1" max="5" step="1" placeholder="1-5" id="rate-${book.id}" />
               <button id="submit-${book.id}">Rate</button>`
-         }</p>
+        }</p> 
       </article>
       </article>
     `;
 
+    //adds functionality to new rating button
     if (!bookData.read) {
       const submitButton = document.getElementById(`submit-${book.id}`);
       submitButton.addEventListener("click", async () => {
@@ -95,7 +108,7 @@ async function renderBooks() {
 
         if (ratingValue >= 1 && ratingValue <= 5) {
           await updateBookRating(book.id, ratingValue);
-          renderBooks(); // Re-render to update the display
+          renderBooks();
         } else {
           alert("Please enter a valid rating between 1 and 5.");
         }

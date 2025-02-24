@@ -6,12 +6,26 @@
     <title>Book Log</title>
   </head>
   <body>
-    <header><h2>Book Log</h2></header>
+    <header><h1>Book Log</h1></header>
     <main>
       <div class="container">
+        <h2>Enter a Book</h2>
         <form>
-          <label for="bookTitleInput">Enter a Book</label>
+          <label for="bookTitleInput">Title</label>
           <input type="text" name="bookTitleInput" id="bookTitleInput" />
+          <label for="bookAuthorInput">Author</label>
+          <input type="text" name="bookAuthorInput" id="bookAuthorInput" />
+          <label for="bookGenreInput">Genre</label>
+          <select name="bookGenreInput" id="bookGenreInput">
+            <option value="" selected></option>
+            <option value="fantasy">Fantasy</option>
+            <option value="hfiction">Historical Fiction</option>
+            <option value="mystthrill">Mystery/Thriller</option>
+            <option value="nfiction">Non-Fiction</option>
+            <option value="romance">Romance</option>
+            <option value="scifi">SciFi</option>
+            <option value="selfhelp">Self Help</option>
+          </select>
           <input id="addBookBtn" type="submit" value="Add Book" />
         </form>
         <ul id="bookList"></ul>

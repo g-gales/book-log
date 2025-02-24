@@ -11,6 +11,8 @@ import log from "loglevel";
 
 //Variables
 const bookTitleInput = document.getElementById("bookTitleInput");
+const bookAuthorInput = document.getElementById("bookAuthorInput");
+const bookGenrenput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
 
@@ -38,10 +40,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 //Add data to Firebase
-async function addBookToFirestore(bookTitle) {
+async function addBookToFirestore(bookTitle, bookAuthor, bookGenre) {
   await addDoc(collection(db, "books"), {
+    genre: bookGenre,
+    author: bookAuthor,
     title: bookTitle,
     read: false,
+    rating: 0,
   });
 }
 
@@ -61,11 +66,52 @@ async function renderBooks() {
   bookList.innerHTML = "";
 
   books.forEach((book) => {
+    const bookData = book.data();
+
     const bookItem = document.createElement("li");
     bookItem.id = book.id;
-    bookItem.textContent = book.data().title;
     bookItem.tabIndex = 0;
+    bookItem.innerHTML = `
+      <article>
+        <h3>${bookData.title}</h3>
+        <p><strong>Author:</strong> ${bookData.author}</p>
+        <p><strong>Genre:</strong> ${bookData.genre}</p>
+         <p><strong>Rating:</strong> ${
+           bookData.read
+             ? `${bookData.rating}/5`
+             : `Not yet rated - Rate Now: 
+              <input type="number" min="1" max="5" step="1" placeholder="1-5" id="rate-${book.id}" />
+              <button id="submit-${book.id}">Rate</button>`
+         }</p>
+      </article>
+      </article>
+    `;
+
+    if (!bookData.read) {
+      const submitButton = document.getElementById(`submit-${book.id}`);
+      submitButton.addEventListener("click", async () => {
+        const ratingInput = document.getElementById(`rate-${book.id}`);
+        const ratingValue = parseInt(ratingInput.value);
+
+        if (ratingValue >= 1 && ratingValue <= 5) {
+          await updateBookRating(book.id, ratingValue);
+          renderBooks(); // Re-render to update the display
+        } else {
+          alert("Please enter a valid rating between 1 and 5.");
+        }
+      });
+    }
+
     bookList.appendChild(bookItem);
+  });
+}
+
+// Function to update rating and mark book as read
+async function updateBookRating(bookId, rating) {
+  const bookRef = doc(db, "books", bookId);
+  await updateDoc(bookRef, {
+    rating: rating,
+    read: true,
   });
 }
 

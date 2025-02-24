@@ -98,6 +98,7 @@ async function renderBooks() {
       </article>
       </article>
     `;
+    bookList.appendChild(bookItem);
 
     //adds functionality to new rating button
     if (!bookData.read) {
@@ -114,8 +115,6 @@ async function renderBooks() {
         }
       });
     }
-
-    bookList.appendChild(bookItem);
   });
 }
 

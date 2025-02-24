@@ -16,13 +16,13 @@ const bookGenreInput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
 
-const aiButton = document.getElementById("send-btn");
-const aiInput = document.getElementById("chat-input");
-const chatHistory = document.getElementById("chat-history");
+// const aiButton = document.getElementById("send-btn");
+// const aiInput = document.getElementById("chat-input");
+// const chatHistory = document.getElementById("chat-history");
 
-var apiKey;
-var genAI;
-var model;
+// var apiKey;
+// var genAI;
+// var model;
 
 //Genre map to properly display genre title
 const genreMap = {
@@ -129,7 +129,9 @@ async function updateBookRating(bookId, rating) {
 }
 
 //Add book
-addBookBtn.addEventListener("click", async () => {
+addBookBtn.addEventListener("click", async (event) => {
+  event.preventDefault(); //Prevent default form submission
+
   const title = bookTitleInput.value.trim();
   const author = bookAuthorInput.value.trim();
   const genre = bookGenreInput.value.trim();

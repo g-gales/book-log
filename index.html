@@ -7,6 +7,19 @@
   </head>
   <body>
     <header><h2>Book Log</h2></header>
-    <main><p>~~insert books here~~</p></main>
+    <main>
+      <div class="container">
+        <label for="bookInput"><h2>Enter a Book</h2></label>
+        <input type="text" name="bookInput" id="bookInput" />
+        <button id="addBookBtn">Add Book</button>
+        <ul id="bookList"></ul>
+      </div>
+      <div id="chatbot-container">
+        <div id="chat-history"></div>
+        <input type="text" id="chat-input" />
+        <button id="send-btn">Send</button>
+      </div>
+    </main>
+    <script src="app.js" type="module"></script>
   </body>
 </html>

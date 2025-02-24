@@ -1,0 +1,32 @@
+{
+  "name": "book-log",
+  "version": "1.0.0",
+  "description": "INFO5146 Book Log for Website Assignment",
+  "homepage": "https://github.com/g-gales/book-log#readme",
+  "bugs": {
+    "url": "https://github.com/g-gales/book-log/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g-gales/book-log.git"
+  },
+  "license": "ISC",
+  "author": "Grayson Gales",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build --dist-dir docs --public-url /CheckList/ index.html",
+    "dev:build": "parcel build --dist-dir dist --no-content-hash index.html",
+    "dev:run": "npm run dev:build && npm run dev:start",
+    "dev:start": "parcel serve --dist-dir dist index.html",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "eslint": "^9.21.0",
+    "firebase": "^11.3.1",
+    "firebase-admin": "^13.1.0",
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.13.3"
+  }
+}

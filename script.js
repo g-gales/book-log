@@ -97,8 +97,6 @@ async function renderBooks() {
          <button id="submit-${book.id}">Submit</button>
        </div>`
         }</p>
-
-      </article>
       </article>
     `;
     bookList.appendChild(bookItem);

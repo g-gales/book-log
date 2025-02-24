@@ -15,7 +15,8 @@
   "type": "module",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build --dist-dir docs --public-url /book-log/ index.html",
+    "clean": "rimraf docs",
+    "build": "npm run clean && parcel build --dist-dir docs --public-url /book-log/ index.html",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "querystring-es3": "^0.2.1",
+    "rimraf": "^6.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "url": "^0.11.4",

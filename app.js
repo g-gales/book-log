@@ -38,10 +38,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 //Add data to Firebase
-async function addBookToFirestore(bookText) {
+async function addBookToFirestore(bookTitle) {
   await addDoc(collection(db, "books"), {
-    text: bookText,
-    completed: false,
+    title: bookTitle,
+    read: false,
   });
 }
 
@@ -61,13 +61,11 @@ async function renderBooks() {
   bookList.innerHTML = "";
 
   books.forEach((book) => {
-    if (!book.data().completed) {
-      const bookItem = document.createElement("li");
-      bookItem.id = book.id;
-      bookItem.textContent = book.data().text;
-      bookItem.tabIndex = 0;
-      bookList.appendChild(bookItem);
-    }
+    const bookItem = document.createElement("li");
+    bookItem.id = book.id;
+    bookItem.textContent = book.data().title;
+    bookItem.tabIndex = 0;
+    bookList.appendChild(bookItem);
   });
 }
 
@@ -75,10 +73,10 @@ async function renderBooks() {
 addBookBtn.addEventListener("click", async () => {
   const book = bookInput.value.trim();
   if (book) {
-    const bookText = sanitizeInput(bookInput.value.trim());
+    const bookTitle = sanitizeInput(bookInput.value.trim());
 
-    if (bookText) {
-      await addBookToFirestore(bookText);
+    if (bookTitle) {
+      await addBookToFirestore(bookTitle);
       renderBooks();
       bookInput.value = "";
     }
@@ -86,16 +84,6 @@ addBookBtn.addEventListener("click", async () => {
   } else {
     alert("Please enter a book!");
   }
-});
-
-// Remove book -- removes from firebase, then calls renderBooks which pulls firebase stored data
-bookList.addEventListener("click", async (e) => {
-  if (e.target.tagName === "LI") {
-    await updateDoc(doc(db, "books", e.target.id), {
-      completed: true,
-    });
-  }
-  renderBooks();
 });
 
 // Add books on page load

@@ -79,32 +79,28 @@ async function renderBooks() {
   books.forEach((book) => {
     const bookData = book.data();
 
-    const bookItem = document.createElement("li");
+    const bookItem = document.createElement("div");
     bookItem.id = book.id;
     bookItem.tabIndex = 0;
     bookItem.classList.add("book");
     //Adds a new book item, if the book is yet rated, adds an input to rate it
     bookItem.innerHTML = `
-      <div>
-        <div class="book-header">
-          <h3 class="book-title">${bookData.title}</h3>
-          <p class="book-author">By: ${bookData.author}</p>
-        </div>
-        <p class="book-genre"> Genre: ${
-          genreMap[bookData.genre] || "Unknown"
-        }</p>
-        <div class="book-rating"> ${
-          bookData.read
-            ? `<p class="read">Rating: ${bookData.rating}/5</p>`
-            : `<p class="not-read">To Be Read and Rated</p>
-              <div class="book-rating-input">
-                <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
-                <button id="submit-${book.id}">I've Read It!</button>
-              </div>`
-        }
-        </div>
+      <div class="book-header">
+        <h3 class="book-title">${bookData.title}</h3>
+        <p class="book-author">By: ${bookData.author}</p>
       </div>
-    `;
+      <p class="book-genre"> Genre: ${genreMap[bookData.genre] || "Unknown"}</p>
+      <div class="book-rating"> ${
+        bookData.read
+          ? `<p class="read">Rating: ${bookData.rating}/5</p>`
+          : `<p class="not-read">To Be Read and Rated</p>
+          <div class="book-rating-input">
+            <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
+            <button id="submit-${book.id}">I've Read It!</button>
+          </div>`
+      }
+      </div>`;
+
     bookList.appendChild(bookItem);
 
     //adds functionality to new rating button

@@ -9,6 +9,7 @@ import {
   collection,
 } from "firebase/firestore";
 import log from "loglevel";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 //Variables
 const bookTitleInput = document.getElementById("bookTitleInput");
@@ -17,13 +18,13 @@ const bookGenreInput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
 
-// const aiButton = document.getElementById("send-btn");
-// const aiInput = document.getElementById("chat-input");
-// const chatHistory = document.getElementById("chat-history");
+const aiButton = document.getElementById("send-btn");
+const aiInput = document.getElementById("chat-input");
+const chatHistory = document.getElementById("chat-history");
 
-// var apiKey;
-// var genAI;
-// var model;
+var apiKey;
+var genAI;
+var model;
 
 //Genre map to properly display genre title
 const genreMap = {
@@ -75,6 +76,20 @@ async function getBooksFromFirestore() {
 }
 
 //Chatbot
+async function getApiKey() {
+  let snapshot = await getDoc(doc(db, "apikey", "googlegenai"));
+  apiKey = snapshot.data().key;
+  genAI = new GoogleGenerativeAI(apiKey);
+  model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
+
+function appendMessage(message) {
+  let history = document.createElement("div");
+  history.textContent = message;
+  history.className = "history";
+  chatHistory.appendChild(history);
+  aiInput.value = "";
+}
 // function ruleChatBot(request) {
 //   if (request.startsWith("add book")) {
 //     let book = request.replace("add book", "").trim();
@@ -159,7 +174,7 @@ async function addBook(bookTitle, bookAuthor, bookGenre) {
   bookTitleInput.value = "";
 
   let bookObject = await getDoc(doc(db, "books", book));
-  createBookItem(book.id, bookObject.data());
+  createBookItem(book, bookObject.data());
 }
 
 //Remove book from firestore rendering
@@ -234,9 +249,7 @@ window.addEventListener("load", () => {
   renderBooks();
 });
 
-addBookBtn.addEventListener("click", async (event) => {
-  event.preventDefault(); //Prevent default form submission
-
+addBookBtn.addEventListener("click", async () => {
   const title = bookTitleInput.value.trim();
   const author = bookAuthorInput.value.trim();
   const genre = bookGenreInput.value.trim();

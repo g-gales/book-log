@@ -103,7 +103,7 @@ function ruleChatBot(request) {
   } else if (request.startsWith("rate")) {
     let taskName = request.replace("rate", "").trim();
     if (taskName) {
-      if (removeFromTaskName(taskName)) {
+      if (removeFromBookName(taskName)) {
         appendMessage("Task " + taskName + " marked as complete.");
       } else {
         appendMessage("Task not found!");
@@ -115,6 +115,11 @@ function ruleChatBot(request) {
   }
 
   return false;
+}
+
+async function askChatBot(request) {
+  let result = await model.generateContent(request);
+  appendMessage(result.response.text());
 }
 
 //Render books
@@ -169,9 +174,6 @@ async function updateBookRating(bookId, rating) {
 //Add book
 async function addBook(bookTitle, bookAuthor, bookGenre) {
   let book = await addBookToFirestore(bookTitle, bookAuthor, bookGenre);
-  bookAuthorInput.value = "";
-  bookGenreInput.value = "";
-  bookTitleInput.value = "";
 
   let bookObject = await getDoc(book);
   createBookItem(book.id, bookObject.data());
@@ -187,6 +189,19 @@ async function removeBook(bookId) {
 //Remove book from DOM
 function removeVisualBook(bookId) {
   document.getElementById(bookId).remove();
+}
+
+//Remove for chatbot
+function removeFromBookName(task) {
+  let ele = document.getElementsByName(task);
+  if (ele.length == 0) {
+    return false;
+  }
+  ele.forEach((e) => {
+    removeBook(e.id);
+    removeVisualBook(e.id);
+  });
+  return true;
 }
 
 //Create Book DOM Element
@@ -245,7 +260,7 @@ function createBookItem(bookId, bookObject) {
 
 // Add books on page load
 window.addEventListener("load", () => {
-  // getApiKey();
+  getApiKey();
   renderBooks();
 });
 
@@ -260,6 +275,10 @@ addBookBtn.addEventListener("click", async () => {
     const bookGenre = sanitizeInput(genre);
 
     await addBook(bookTitle, bookAuthor, bookGenre);
+
+    bookAuthorInput.value = "";
+    bookGenreInput.value = "";
+    bookTitleInput.value = "";
   } else {
     alert("Please fill out all fields!");
   }
@@ -271,24 +290,6 @@ function sanitizeInput(input) {
   div.textContent = input;
   return div.innerHTML;
 }
-
-bookAuthorInput.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
-    addBookBtn.click();
-  }
-});
-
-bookTitleInput.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
-    addBookBtn.click();
-  }
-});
-
-bookGenreInput.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
-    addBookBtn.click();
-  }
-});
 
 bookList.addEventListener("keypress", async function (e) {
   if (e.target.className === "remove-btn" && e.key === "Enter") {

@@ -82,9 +82,10 @@ async function renderBooks() {
     const bookItem = document.createElement("li");
     bookItem.id = book.id;
     bookItem.tabIndex = 0;
+    bookItem.classList.add("book");
     //Adds a new book item, if the book is yet rated, adds an input to rate it
     bookItem.innerHTML = `
-      <article>
+      <div>
         <div class="book-header">
           <h3 class="book-title">${bookData.title}</h3>
           <p class="book-author">By: ${bookData.author}</p>
@@ -102,7 +103,7 @@ async function renderBooks() {
               </div>`
         }
         </div>
-      </article>
+      </div>
     `;
     bookList.appendChild(bookItem);
 

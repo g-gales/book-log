@@ -62,7 +62,7 @@ async function addBookToFirestore(bookTitle, bookAuthor, bookGenre) {
     rating: 0,
     removed: false,
   });
-  return book.id;
+  return book;
 }
 
 //Fetch books from Firestore when app loads
@@ -90,32 +90,32 @@ function appendMessage(message) {
   chatHistory.appendChild(history);
   aiInput.value = "";
 }
-// function ruleChatBot(request) {
-//   if (request.startsWith("add book")) {
-//     let book = request.replace("add book", "").trim();
-//     if (book) {
-//       addBook(task);
-//       appendMessage("Task " + task + " added!");
-//     } else {
-//       appendMessage("Please specify a task to add.");
-//     }
-//     return true;
-//   } else if (request.startsWith("complete")) {
-//     let taskName = request.replace("complete", "").trim();
-//     if (taskName) {
-//       if (removeFromTaskName(taskName)) {
-//         appendMessage("Task " + taskName + " marked as complete.");
-//       } else {
-//         appendMessage("Task not found!");
-//       }
-//     } else {
-//       appendMessage("Please specify a task to complete.");
-//     }
-//     return true;
-//   }
 
-//   return false;
-// }
+function ruleChatBot(request) {
+  if (request.startsWith("add book")) {
+    let book = request.replace("add book", "").trim();
+    if (book) {
+      appendMessage("Who is the author of " + book);
+    } else {
+      appendMessage("Please specify a book to add.");
+    }
+    return true;
+  } else if (request.startsWith("rate")) {
+    let taskName = request.replace("rate", "").trim();
+    if (taskName) {
+      if (removeFromTaskName(taskName)) {
+        appendMessage("Task " + taskName + " marked as complete.");
+      } else {
+        appendMessage("Task not found!");
+      }
+    } else {
+      appendMessage("Please specify a task to complete.");
+    }
+    return true;
+  }
+
+  return false;
+}
 
 //Render books
 async function renderBooks() {
@@ -173,8 +173,8 @@ async function addBook(bookTitle, bookAuthor, bookGenre) {
   bookGenreInput.value = "";
   bookTitleInput.value = "";
 
-  let bookObject = await getDoc(doc(db, "books", book));
-  createBookItem(book, bookObject.data());
+  let bookObject = await getDoc(book);
+  createBookItem(book.id, bookObject.data());
 }
 
 //Remove book from firestore rendering

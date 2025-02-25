@@ -159,7 +159,7 @@ async function addBook(bookTitle, bookAuthor, bookGenre) {
   bookGenreInput.value = "";
   bookTitleInput.value = "";
 
-  let bookObject = await getDoc(book);
+  let bookObject = await getDoc(doc(db, "books", book));
   createBookItem(book.id, bookObject.data());
 }
 

@@ -221,9 +221,9 @@ function createBookItem(bookId, bookObject) {
     <div class="book-rating"> ${
       bookObject.read
         ? `<p class="read">Rating: ${bookObject.rating}/5</p>`
-        : `<p class="not-read">Submit a Rating When Read</p>
+        : `<label class="not-read" for="input-${bookId}">Submit a Rating When Read</label>
         <div class="book-rating-input">
-          <input type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" />
+          <input name="input-${bookId}" type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" />
           <button id="submit-${bookId}">I've Read It!</button>
         </div>`
     }

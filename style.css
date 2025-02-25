@@ -178,7 +178,7 @@ input::placeholder {
   margin: 1rem 0;
 }
 
-.not-read {
+label.not-read {
   font-size: 1.2rem;
   font-style: italic;
   text-align: left;
@@ -186,9 +186,14 @@ input::placeholder {
 }
 
 .remove-btn {
-  background-color: #e96e6e;
-  color: #0b0b0b;
+  background-color: #959595;
+  color: #292929;
   margin-bottom: 0.5rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.remove-btn:hover {
+  background-color: #f37c7c;
 }
 
 /*Chatbot Styles*/

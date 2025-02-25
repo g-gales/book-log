@@ -251,8 +251,8 @@ function createBookItem(bookId, bookObject) {
   const removeButton = document.getElementById(`remove-${bookId}`);
   removeButton.addEventListener("click", async (e) => {
     if (e.target.parentNode.tagName === "ARTICLE") {
-      removeBook(e.target.parentNode.id);
-      removeVisualBook(e.target.parentNode.id);
+      removeBook(bookId);
+      removeVisualBook(bookId);
     }
   });
 }
@@ -289,6 +289,24 @@ function sanitizeInput(input) {
   div.textContent = input;
   return div.innerHTML;
 }
+
+bookAuthorInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    addBookBtn.click();
+  }
+});
+
+bookTitleInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    addBookBtn.click();
+  }
+});
+
+bookGenreInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    addBookBtn.click();
+  }
+});
 
 bookList.addEventListener("keypress", async function (e) {
   if (e.target.className === "remove-btn" && e.key === "Enter") {

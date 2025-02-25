@@ -75,32 +75,32 @@ async function getBooksFromFirestore() {
 }
 
 //Chatbot
-function ruleChatBot(request) {
-  if (request.startsWith("add book")) {
-    let book = request.replace("add book", "").trim();
-    if (book) {
-      addBook(task);
-      appendMessage("Task " + task + " added!");
-    } else {
-      appendMessage("Please specify a task to add.");
-    }
-    return true;
-  } else if (request.startsWith("complete")) {
-    let taskName = request.replace("complete", "").trim();
-    if (taskName) {
-      if (removeFromTaskName(taskName)) {
-        appendMessage("Task " + taskName + " marked as complete.");
-      } else {
-        appendMessage("Task not found!");
-      }
-    } else {
-      appendMessage("Please specify a task to complete.");
-    }
-    return true;
-  }
+// function ruleChatBot(request) {
+//   if (request.startsWith("add book")) {
+//     let book = request.replace("add book", "").trim();
+//     if (book) {
+//       addBook(task);
+//       appendMessage("Task " + task + " added!");
+//     } else {
+//       appendMessage("Please specify a task to add.");
+//     }
+//     return true;
+//   } else if (request.startsWith("complete")) {
+//     let taskName = request.replace("complete", "").trim();
+//     if (taskName) {
+//       if (removeFromTaskName(taskName)) {
+//         appendMessage("Task " + taskName + " marked as complete.");
+//       } else {
+//         appendMessage("Task not found!");
+//       }
+//     } else {
+//       appendMessage("Please specify a task to complete.");
+//     }
+//     return true;
+//   }
 
-  return false;
-}
+//   return false;
+// }
 
 //Render books
 async function renderBooks() {
@@ -229,7 +229,7 @@ function createBookItem(bookId, bookObject) {
 
 // Add books on page load
 window.addEventListener("load", () => {
-  getApiKey();
+  // getApiKey();
   renderBooks();
 });
 

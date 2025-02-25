@@ -255,7 +255,6 @@ function createBookItem(bookId, bookObject) {
       removeVisualBook(e.target.parentNode.id);
     }
   });
-  renderBooks();
 }
 
 // Add books on page load

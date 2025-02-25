@@ -89,17 +89,19 @@ async function renderBooks() {
           <h3 class="book-title">${bookData.title}</h3>
           <p class="book-author">By: ${bookData.author}</p>
         </div>
-        <p class="book-genre"> ${genreMap[bookData.genre] || "Unknown"}</p>
-        <p class="book-rating ${
+        <p class="book-genre"> Genre: ${
+          genreMap[bookData.genre] || "Unknown"
+        }</p>
+        <div class="book-rating"> ${
           bookData.read
-            ? `read">Rating: ${bookData.rating}/5`
-            : `not-read">To Be Read and Rated
-            <div class="book-rating-input">
-         <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
-         <button id="submit-${book.id}">Submit</button>
-       </div>`
+            ? `<p class="read">Rating: ${bookData.rating}/5</p>`
+            : `<p class="not-read">To Be Read and Rated</p>
+              <div class="book-rating-input">
+                <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
+                <button id="submit-${book.id}">I've Read It!</button>
+              </div>`
         }
-        </p>
+        </div>
       </article>
     `;
     bookList.appendChild(bookItem);

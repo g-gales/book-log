@@ -6,6 +6,12 @@ body {
   background-color: #f4f4f4;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 h1 {
   background-color: #1c5a8d;
   color: white;
@@ -16,6 +22,10 @@ h1 {
 .container {
   margin: 20px auto;
   max-width: 400px;
+}
+
+.form-title {
+  margin-bottom: 0.25rem;
 }
 
 .form-container {
@@ -45,8 +55,7 @@ select {
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
-    /* Subtle shadow close to the box */ 0 4px 8px rgba(0, 0, 0, 0.05); /* Fades outwards */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
@@ -55,9 +64,9 @@ select:focus,
 input[type="text"]:hover,
 select:hover {
   outline: none;
-  border-color: #1c5a8d; /* Highlight border */
+  border-color: #1c5a8d;
   box-shadow: 0 2px 6px rgba(28, 90, 141, 0.3),
-    0 6px 12px rgba(28, 90, 141, 0.15); /* Soft blue glow */
+    0 6px 12px rgba(28, 90, 141, 0.15);
 }
 
 input::placeholder {
@@ -84,9 +93,10 @@ button:hover {
 
 /* Book container styling */
 #bookList li {
+  background-color: #fcfcfc;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 15px;
+  padding: 15px 20px;
   margin-bottom: 10px;
   list-style: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -115,20 +125,21 @@ button:hover {
 .book-genre {
   font-style: italic;
   font-size: 0.9rem;
-  margin-bottom: 8px;
+  margin: 5px 0;
   text-align: left;
 }
 
 .book-rating {
-  font-size: 1.2rem;
-  margin-top: 8px;
+  margin: 8px 0;
 }
 
 .book-rating.read {
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
 .book-rating.not-read {
+  font-size: 1.05rem;
   font-style: italic;
 }
 

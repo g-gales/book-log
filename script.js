@@ -122,7 +122,6 @@ async function renderBooks() {
       removed: bookData.removed,
     });
   });
-  console.log(bookArr);
 
   bookArr.sort((a, b) => {
     const authorA = a.author.toUpperCase();

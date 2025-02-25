@@ -104,7 +104,7 @@ async function renderBooks() {
             </div>`
         }
         </div>
-        <button id="remove-${book.id}">Remove Book</button>`;
+        <button id="remove-${book.id}" class="remove-btn">Remove Book</button>`;
 
       bookList.appendChild(bookItem);
 
@@ -131,7 +131,7 @@ async function renderBooks() {
             removed: true,
           });
         }
-        renderTasks();
+        renderBooks();
       });
     }
   });

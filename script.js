@@ -90,15 +90,16 @@ async function renderBooks() {
           <p class="book-author">By: ${bookData.author}</p>
         </div>
         <p class="book-genre"> ${genreMap[bookData.genre] || "Unknown"}</p>
-        <p class="book-rating"><strong>Rating:</strong> ${
+        <p class="book-rating ${
           bookData.read
-            ? `${bookData.rating}/5`
-            : `Not yet rated - Rate Now!
+            ? `read">Rating: ${bookData.rating}/5`
+            : `not-read">To Be Read and Rated
             <div class="book-rating-input">
          <input type="number" min="1" max="5" placeholder="1-5" id="rate-${book.id}" />
          <button id="submit-${book.id}">Submit</button>
        </div>`
-        }</p>
+        }
+        </p>
       </article>
     `;
     bookList.appendChild(bookItem);

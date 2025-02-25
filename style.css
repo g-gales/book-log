@@ -21,7 +21,6 @@ h1 {
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
   margin-bottom: 20px;
 }
 
@@ -32,7 +31,7 @@ ul {
 
 label {
   font-weight: bold;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
   text-align: left;
 }
 
@@ -46,10 +45,27 @@ select {
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+    /* Subtle shadow close to the box */ 0 4px 8px rgba(0, 0, 0, 0.05); /* Fades outwards */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+select:focus,
+input[type="text"]:hover,
+select:hover {
+  outline: none;
+  border-color: #1c5a8d; /* Highlight border */
+  box-shadow: 0 2px 6px rgba(28, 90, 141, 0.3),
+    0 6px 12px rgba(28, 90, 141, 0.15); /* Soft blue glow */
 }
 
 input::placeholder {
-  color: #585858;
+  color: #595959;
+}
+
+.add-book-btn {
+  font-size: 1.2rem;
 }
 
 /* Style for buttons */
@@ -78,9 +94,10 @@ button:hover {
 
 .book-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: baseline;
   margin-bottom: 5px;
+  gap: 1rem;
 }
 
 .book-title {
@@ -99,6 +116,7 @@ button:hover {
   font-style: italic;
   font-size: 0.9rem;
   margin-bottom: 8px;
+  text-align: left;
 }
 
 .book-rating {
@@ -106,12 +124,12 @@ button:hover {
   margin-top: 8px;
 }
 
-#bookList h3 {
-  margin: 0 0 8px;
+.book-rating.read {
+  font-weight: bold;
 }
 
-#bookList p {
-  margin: 4px 0;
+.book-rating.not-read {
+  font-style: italic;
 }
 
 .book-rating-input {

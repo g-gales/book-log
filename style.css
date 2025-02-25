@@ -169,7 +169,7 @@ input::placeholder {
 }
 
 .book-rating {
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 1rem;
 }
 
 .read {
@@ -188,7 +188,7 @@ input::placeholder {
 .remove-btn {
   background-color: #e96e6e;
   color: #0b0b0b;
-  margin: 1rem 0 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /*Chatbot Styles*/

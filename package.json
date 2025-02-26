@@ -14,9 +14,9 @@
   "author": "Grayson Gales",
   "type": "module",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel html/*.html",
     "clean": "rimraf docs",
-    "build": "npm run clean && parcel build --dist-dir docs --public-url /book-log/ index.html",
+    "build": "npm run clean && parcel build --dist-dir docs --public-url /book-log/ html/*.html",
     "lint": "eslint ."
   },
   "dependencies": {

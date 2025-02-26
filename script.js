@@ -418,19 +418,28 @@ function createBookItem(bookId, bookObject) {
   bookItem.classList.add("book");
 
   let ratingSection = "";
+  let actionsSection = "";
+
   if (bookObject.read) {
     ratingSection = `
-      <p class="read">Rating: ${bookObject.rating}/5</p>
-      <button id="edit-${bookId}" class="edit-rating-btn">Edit Rating</button>
+      <p class="read">Rating: ${bookObject.rating}/5</p>`;
+    actionsSection = `
+      <div class="book-actions">
+        <button id="edit-${bookId}" class="edit-rating-btn">Edit Rating</button>
+        <button id="remove-${bookId}" class="remove-btn">Remove Book</button>
+      </div>
     `;
   } else {
+    // When not rated yet, show the rating input field and a separate remove button.
     ratingSection = `
-      <p class="not-read">Submit a Rating When Read</p>
+      <label class="not-read" for="rate-${bookId}">Submit a Rating When Read</label>
       <div class="book-rating-input">
-        <input aria-label="Submit a rating when read" name="input-${bookId}" type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" />
+        <input name="input-${bookId}" type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" aria-label="Rating input for ${bookObject.title}" />
         <button id="submit-${bookId}">I've Read It!</button>
       </div>
     `;
+    // For unread books, keep the remove button below
+    actionsSection = `<button id="remove-${bookId}" class="remove-btn">Remove Book</button>`;
   }
 
   bookItem.innerHTML = `
@@ -441,8 +450,8 @@ function createBookItem(bookId, bookObject) {
     <p class="book-genre">Genre: ${genreMap[bookObject.genre] || "Unknown"}</p>
     <div class="book-rating">
       ${ratingSection}
+      ${actionsSection}
     </div>
-    <button id="remove-${bookId}" class="remove-btn">Remove Book</button>
   `;
   bookList.appendChild(bookItem);
 
@@ -469,7 +478,7 @@ function createBookItem(bookId, bookObject) {
         const ratingDiv = bookItem.querySelector(".book-rating");
         ratingDiv.innerHTML = `
           <div class="book-rating-input">
-            <input aria-label="Submit a new rating" type="number" min="1" max="5" placeholder="1-5" id="edit-input-${bookId}" />
+            <input type="number" min="1" max="5" placeholder="1-5" id="edit-input-${bookId}" aria-label="Submit a new rating" />
             <button id="save-edit-${bookId}">Save Rating</button>
           </div>
         `;
@@ -492,7 +501,10 @@ function createBookItem(bookId, bookObject) {
 
   const removeButton = document.getElementById(`remove-${bookId}`);
   removeButton.addEventListener("click", async (e) => {
-    if (e.target.parentNode.tagName === "ARTICLE") {
+    if (
+      e.target.parentNode.tagName === "ARTICLE" ||
+      e.target.closest("article")
+    ) {
       removeBook(bookId);
       removeVisualBook(bookId);
     }
@@ -548,11 +560,11 @@ chatbotHeader.addEventListener("click", () => {
   if (chatbotContainer.classList.contains("collapsed")) {
     chatbotContainer.classList.remove("collapsed");
     chatbotContainer.classList.add("expanded");
-    chatbotHeader.textContent = "v"; // Change header icon to indicate it can collapse
+    chatbotHeader.textContent = "Close Chat";
   } else {
     chatbotContainer.classList.remove("expanded");
     chatbotContainer.classList.add("collapsed");
-    chatbotHeader.textContent = "^"; // Change header icon to indicate it can expand
+    chatbotHeader.textContent = "Chat!";
   }
 });
 

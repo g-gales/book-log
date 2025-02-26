@@ -172,6 +172,12 @@ input::placeholder {
   margin: 0.5rem 0 1rem;
 }
 
+.book-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .read {
   font-size: 1.2rem;
   font-weight: bold;
@@ -201,22 +207,21 @@ input::placeholder {
 #chatbot-container {
   position: fixed;
   bottom: 0;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 300px;
   background: white;
   border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: height 0.3s ease;
-  height: 40px; /* Collapsed height showing only the header */
+  height: 40px;
 }
 
-/* Expanded state: increase height to show chat content */
 #chatbot-container.expanded {
-  height: 350px; /* Adjust as needed */
+  height: 350px;
 }
 
-/* Chatbot header toggle button */
 #chatbot-header {
   background-color: #1c5a8d;
   color: white;
@@ -226,12 +231,10 @@ input::placeholder {
   user-select: none;
 }
 
-/* Chat content area styling */
 .chat-content {
   padding: 10px;
 }
 
-/* Hide chat content when collapsed */
 #chatbot-container.collapsed .chat-content {
   display: none;
 }
@@ -289,8 +292,10 @@ input::placeholder {
   }
 
   #chatbot-container {
-    left: 20px;
-    right: auto;
+    left: calc(
+      50% - 16.5rem
+    ); /* aligns with the left edge of a centered 33rem container */
+    transform: none;
   }
 }
 

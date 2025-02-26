@@ -17,7 +17,7 @@ const bookAuthorInput = document.getElementById("bookAuthorInput");
 const bookGenreInput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
-const signOutBtn = document.getElementById("signOutBtn");
+// const signOutBtn = document.getElementById("signOutBtn");
 
 const aiButton = document.getElementById("send-btn");
 const aiInput = document.getElementById("chat-input");
@@ -29,11 +29,11 @@ var apiKey;
 var genAI;
 var model;
 
-const email = JSON.parse(localStorage.getItem("email"));
+// const email = JSON.parse(localStorage.getItem("email"));
 
-if (!email) {
-  window.location.href = "index.html";
-}
+// if (!email) {
+//   window.location.href = "index.html";
+// }
 
 //Chatbot memory variables
 let pendingBookTitle = "";
@@ -61,15 +61,21 @@ async function addBookToFirestore(bookTitle, bookAuthor, bookGenre) {
     read: false,
     rating: 0,
     removed: false,
-    email: email,
+    // email: email,
   });
   return book;
 }
 
 //Fetch books from Firestore when app loads
 async function getBooksFromFirestore() {
-  let q = query(collection(db, "todos"), where("email", "==", email));
-  return await getDocs(q);
+  // let q = query(collection(db, "todos"), where("email", "==", email));
+  // return await getDocs(q);
+  var data = await getDocs(collection(db, "books"));
+  let userData = [];
+  data.forEach((doc) => {
+    userData.push(doc);
+  });
+  return userData;
 }
 
 //Formatting helper functions
@@ -508,10 +514,10 @@ window.addEventListener("load", () => {
 
 // ----------------- Event Handlers ------------------------
 
-signOutBtn.addEventListener("click", function (event) {
-  localStorage.removeItem("email");
-  window.location.href = "index.html";
-});
+// signOutBtn.addEventListener("click", function (event) {
+//   localStorage.removeItem("email");
+//   window.location.href = "index.html";
+// });
 
 addBookBtn.addEventListener("click", async () => {
   const title = bookTitleInput.value.trim();

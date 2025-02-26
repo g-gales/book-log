@@ -1,3 +1,4 @@
+import { db } from "../js/firebase";
 import {
   doc,
   getDocs,

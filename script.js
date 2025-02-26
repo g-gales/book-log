@@ -26,6 +26,12 @@ var apiKey;
 var genAI;
 var model;
 
+//Chatbot memory variables
+let pendingBookTitle = "";
+let pendingBookAuthor = "";
+let pendingBookGenre = "";
+let pendingBookRating = "";
+
 //Genre map to properly display genre title
 const genreMap = {
   fantasy: "Fantasy",
@@ -75,6 +81,14 @@ async function getBooksFromFirestore() {
   return userData;
 }
 
+//Formatting helper functions
+function capitalizeWords(string) {
+  return string
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 //Chatbot
 async function getApiKey() {
   let snapshot = await getDoc(doc(db, "apikey", "googlegenai"));
@@ -91,25 +105,144 @@ function appendMessage(message) {
   aiInput.value = "";
 }
 
+function getGenreKey(genreMatch) {
+  let genreKey = "";
+  Object.entries(genreMap).forEach(([key, value]) => {
+    if (value.toLowerCase() === genreMatch.toLowerCase().trim) {
+      genreKey = key;
+    }
+  });
+  if (!genreMap[genreKey]) {
+    return false;
+  } else {
+    return genreKey;
+  }
+}
+
 function ruleChatBot(request) {
-  if (request.startsWith("add book")) {
-    let book = request.replace("add book", "").trim();
-    if (book) {
-      appendMessage("Who is the author of " + book);
+  let normalized = request.trim().toLowerCase();
+
+  // Adding a book
+  let titleMatch = normalized.match(
+    /(?:i want to add|add|can you add|the title is)(?: the book|book)? "?([^\"]+)"?/i
+  );
+  let authorMatch = normalized.match(/(?:the author is|by) ([^\"]+)/i);
+  let genreMatch = normalized.match(
+    /(?:the genre is|it's a|it is a|its a|this falls under) ([\w\s]+) (?:book)?/i
+  );
+
+  if (titleMatch) {
+    pendingBookTitle = capitalizeWords(titleMatch[1].trim());
+    if (!pendingBookAuthor || !authorMatch) {
+      appendMessage(`Who is the author of "${pendingBookTitle}"?`);
     } else {
-      appendMessage("Please specify a book to add.");
+      pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
+      if (!pendingBookGenre || !genreMatch) {
+        appendMessage(`What's the genre for ${pendingBookTitle}?`);
+      } else {
+        let genreKey = getGenreKey(genreMatch);
+        if (!genreKey) {
+          appendMessage(
+            "Sorry, we don't have that genre in our library. Please choose from the following: " +
+              Object.values(genreMap).join(", ")
+          );
+        } else {
+          pendingBookGenre = genreKey;
+          addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
+          appendMessage(
+            `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${pendingBookGenre} genre.`
+          );
+          pendingBookAuthor = "";
+          pendingBookGenre = "";
+          pendingBookTitle = "";
+        }
+      }
     }
     return true;
-  } else if (request.startsWith("rate")) {
-    let taskName = request.replace("rate", "").trim();
-    if (taskName) {
-      if (removeFromBookName(taskName)) {
-        appendMessage("Task " + taskName + " marked as complete.");
-      } else {
-        appendMessage("Task not found!");
-      }
+  } else if (authorMatch || genreMatch) {
+    if (authorMatch) {
+      pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
+    }
+    let genreKey = getGenreKey(genreMatch);
+    if (genreKey) {
+      pendingBookGenre = genreKey;
+    }
+    appendMessage("I see that you want to add a book, what's the title?");
+  }
+
+  // Rate book (only if not already rated)
+  let rateMatch = normalized.match(
+    /(?:rate|i want to rate) "?([^\"]+)"? (?:a )?(\d)\/5/i
+  );
+  if (rateMatch) {
+    pendingBookTitle = capitalizeWords(rateMatch[1].trim());
+    pendingBookRating = parseInt(rateMatch[2]);
+
+    if (pendingBookRating >= 1 && pendingBookRating <= 5) {
+      let found = false;
+      document.querySelectorAll(".book").forEach((book) => {
+        let titleElement = book.querySelector(".book-title");
+        if (
+          titleElement &&
+          titleElement.textContent.toLowerCase() ===
+            pendingBookTitle.toLowerCase()
+        ) {
+          let ratingElement = book.querySelector(".read");
+          if (ratingElement) {
+            appendMessage(
+              `"${pendingBookTitle}" is already read and rated, and it cannot be changed. Please remove the book first, and then add it again it ro re-rate it.`
+            );
+          } else {
+            let bookId = book.id;
+            updateBookRating(bookId, pendingBookRating);
+            appendMessage(
+              `Rated "${pendingBookTitle}" as ${pendingBookRating}/5.`
+            );
+            renderBooks();
+            pendingBookRating = "";
+            pendingBookTitle = "";
+          }
+          found = true;
+        }
+      });
+      if (!found)
+        appendMessage(
+          `You haven't added "${pendingBookTitle}" to your bookshelf yet.`
+        );
     } else {
-      appendMessage("Please specify a task to complete.");
+      appendMessage("Ratings must be whole numbers between 1 and 5.");
+    }
+    return true;
+  }
+
+  // Remove book
+  let removeMatch = normalized.match(
+    /(?:i want to|remove|delete) (?:the )?book "?([^\"]+)"?/i
+  );
+  if (removeMatch) {
+    pendingBookTitle = capitalizeWords(removeMatch[1].trim());
+
+    if (pendingBookTitle) {
+      let found = false;
+      document.querySelectorAll(".book").forEach((book) => {
+        let titleElement = book.querySelector(".book-title");
+        if (
+          titleElement &&
+          titleElement.textContent.toLowerCase() ===
+            pendingBookTitle.toLowerCase()
+        ) {
+          let bookId = book.id;
+          removeBook(bookId);
+          removeVisualBook(bookId);
+          appendMessage(`Removed "${pendingBookTitle}" from the list.`);
+          found = true;
+          pendingBookTitle = "";
+        }
+      });
+      if (!found)
+        appendMessage(`The book, "${pendingBookTitle}", was not found.`);
+    } else {
+      appendMessage("Please specify a book title to remove.");
     }
     return true;
   }
@@ -191,19 +324,6 @@ function removeVisualBook(bookId) {
   document.getElementById(bookId).remove();
 }
 
-//Remove for chatbot
-function removeFromBookName(task) {
-  let ele = document.getElementsByName(task);
-  if (ele.length == 0) {
-    return false;
-  }
-  ele.forEach((e) => {
-    removeBook(e.id);
-    removeVisualBook(e.id);
-  });
-  return true;
-}
-
 //Create Book DOM Element
 function createBookItem(bookId, bookObject) {
   let bookItem = document.createElement("article");
@@ -280,6 +400,23 @@ addBookBtn.addEventListener("click", async () => {
     bookTitleInput.value = "";
   } else {
     alert("Please fill out all fields!");
+  }
+});
+
+aiButton.addEventListener("click", async () => {
+  let prompt = aiInput.value.trim().toLowerCase();
+  if (prompt) {
+    if (!ruleChatBot(prompt)) {
+      askChatBot(prompt);
+    }
+  } else {
+    appendMessage("Please ask a question.");
+  }
+});
+
+aiInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    aiButton.click();
   }
 });
 

@@ -110,7 +110,7 @@ select:hover,
 input[type="number"]:hover,
 input[type="number"]:focus {
   outline: none;
-  border: 3px solid #113d60;
+  border: 2px solid #113d60;
   box-shadow: 0 2px 6px rgba(28, 90, 141, 0.3),
     0 6px 12px rgba(28, 90, 141, 0.15);
 }
@@ -196,16 +196,44 @@ input::placeholder {
   background-color: #f37c7c;
 }
 
-/*Chatbot Styles*/
+/* ----------------Chatbot Styles----------------*/
+
 #chatbot-container {
-  width: 300px;
-  border: 1px solid #ccc;
-  padding: 10px;
   position: fixed;
-  bottom: 20px;
+  bottom: 0;
   right: 20px;
+  width: 300px;
   background: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: height 0.3s ease;
+  height: 40px; /* Collapsed height showing only the header */
+}
+
+/* Expanded state: increase height to show chat content */
+#chatbot-container.expanded {
+  height: 350px; /* Adjust as needed */
+}
+
+/* Chatbot header toggle button */
+#chatbot-header {
+  background-color: #1c5a8d;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Chat content area styling */
+.chat-content {
+  padding: 10px;
+}
+
+/* Hide chat content when collapsed */
+#chatbot-container.collapsed .chat-content {
+  display: none;
 }
 
 #chat-history {
@@ -229,7 +257,7 @@ input::placeholder {
 
 .history {
   background-color: #fcfcfc;
-  padding-bottom: 15px;
+  padding: 15px 15px 15px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -258,6 +286,11 @@ input::placeholder {
   .book-author,
   .book-genre {
     font-size: 1rem;
+  }
+
+  #chatbot-container {
+    left: 20px;
+    right: auto;
   }
 }
 

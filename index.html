@@ -50,14 +50,17 @@
           <div id="bookList"></div>
         </section>
       </div>
-      <div id="chatbot-container">
-        <div id="chat-history"></div>
-        <input
-          aria-label="Ask the chatbot a question"
-          type="text"
-          id="chat-input"
-          name="chat-input" />
-        <button id="send-btn">Send</button>
+      <div id="chatbot-container" class="collapsed">
+        <div id="chatbot-header">^</div>
+        <div class="chat-content">
+          <div id="chat-history"></div>
+          <input
+            aria-label="Ask the chatbot a question"
+            type="text"
+            id="chat-input"
+            name="chat-input" />
+          <button id="send-btn">Send</button>
+        </div>
       </div>
     </main>
     <script src="script.js" type="module"></script>

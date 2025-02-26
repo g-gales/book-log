@@ -21,6 +21,8 @@ const bookList = document.getElementById("bookList");
 const aiButton = document.getElementById("send-btn");
 const aiInput = document.getElementById("chat-input");
 const chatHistory = document.getElementById("chat-history");
+const chatbotContainer = document.getElementById("chatbot-container");
+const chatbotHeader = document.getElementById("chatbot-header");
 
 var apiKey;
 var genAI;
@@ -503,6 +505,8 @@ window.addEventListener("load", () => {
   renderBooks();
 });
 
+// ----------------- Event Handlers ------------------------
+
 addBookBtn.addEventListener("click", async () => {
   const title = bookTitleInput.value.trim();
   const author = bookAuthorInput.value.trim();
@@ -537,6 +541,18 @@ aiButton.addEventListener("click", async () => {
 aiInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     aiButton.click();
+  }
+});
+
+chatbotHeader.addEventListener("click", () => {
+  if (chatbotContainer.classList.contains("collapsed")) {
+    chatbotContainer.classList.remove("collapsed");
+    chatbotContainer.classList.add("expanded");
+    chatbotHeader.textContent = "v"; // Change header icon to indicate it can collapse
+  } else {
+    chatbotContainer.classList.remove("expanded");
+    chatbotContainer.classList.add("collapsed");
+    chatbotHeader.textContent = "^"; // Change header icon to indicate it can expand
   }
 });
 

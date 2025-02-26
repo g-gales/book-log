@@ -105,18 +105,14 @@ function appendMessage(message) {
   aiInput.value = "";
 }
 
-function getGenreKey(genreMatch) {
+function getGenreKey(genreString) {
   let genreKey = "";
   Object.entries(genreMap).forEach(([key, value]) => {
-    if (value.toLowerCase() === genreMatch.toLowerCase().trim) {
+    if (value.toLowerCase() === genreString.toLowerCase().trim()) {
       genreKey = key;
     }
   });
-  if (!genreMap[genreKey]) {
-    return false;
-  } else {
-    return genreKey;
-  }
+  return genreMap[genreKey] ? genreKey : false;
 }
 
 function ruleChatBot(request) {
@@ -126,50 +122,49 @@ function ruleChatBot(request) {
   let titleMatch = normalized.match(
     /(?:i want to add|add|can you add|the title is)(?: the book| book)? "?([^"]+?)"?(?=\s+(?:by|the author is))/i
   );
-
   let authorMatch = normalized.match(/(?:by|the author is) ([^"]+)/i);
-
   let genreMatch = normalized.match(
-    /(?:the genre is|it's a|it is a|its a|this falls under) ([\w\s]+) (?:book)?/i
+    /(?:the genre is|it's a|it is a|its a|this falls under) ([\w\s]+)(?: book)?/i
   );
 
   if (titleMatch || pendingBookTitle) {
-    pendingBookTitle = capitalizeWords(titleMatch[1].trim());
-    if (!pendingBookAuthor || !authorMatch) {
-      appendMessage(`Who is the author of "${pendingBookTitle}"?`);
-    } else {
+    if (titleMatch) {
+      pendingBookTitle = capitalizeWords(titleMatch[1].trim());
+    }
+    if (authorMatch) {
       pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
-      if (!pendingBookGenre || !genreMatch) {
-        appendMessage(`What's the genre for ${pendingBookTitle}?`);
-      } else {
-        let genreKey = getGenreKey(genreMatch);
-        if (!genreKey) {
-          appendMessage(
-            "Sorry, we don't have that genre in our library. Please choose from the following: " +
-              Object.values(genreMap).join(", ")
-          );
-        } else {
-          pendingBookGenre = genreKey;
-          addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
-          appendMessage(
-            `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${pendingBookGenre} genre.`
-          );
-          pendingBookAuthor = "";
-          pendingBookGenre = "";
-          pendingBookTitle = "";
-        }
-      }
+    }
+    if (genreMatch) {
+      let extractedGenre = genreMatch[1].trim();
+      pendingBookGenre = getGenreKey(extractedGenre);
+    }
+
+    if (!pendingBookAuthor) {
+      appendMessage(`Who is the author of "${pendingBookTitle}"?`);
+      return true;
+    } else if (!pendingBookGenre) {
+      appendMessage(`What's the genre for ${pendingBookTitle}?`);
+      return true;
+    } else {
+      addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
+      appendMessage(
+        `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${pendingBookGenre} genre.`
+      );
+      pendingBookAuthor = "";
+      pendingBookGenre = "";
+      pendingBookTitle = "";
     }
     return true;
   } else if (authorMatch || genreMatch) {
     if (authorMatch) {
       pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
     }
-    let genreKey = getGenreKey(genreMatch);
-    if (genreKey) {
-      pendingBookGenre = genreKey;
+    if (genreMatch) {
+      let extractedGenre = genreMatch[1].trim();
+      pendingBookGenre = getGenreKey(extractedGenre);
     }
     appendMessage("I see that you want to add a book, what's the title?");
+    return true;
   }
 
   // Rate book (only if not already rated)
@@ -259,7 +254,7 @@ async function askChatBot(request) {
 
 //Render books
 async function renderBooks() {
-  var books = await getBooksFromFirestore();
+  const books = await getBooksFromFirestore();
   bookList.innerHTML = "";
 
   let bookArr = [];
@@ -333,7 +328,6 @@ function createBookItem(bookId, bookObject) {
   bookItem.id = bookId;
   bookItem.tabIndex = 0;
   bookItem.classList.add("book");
-  //Adds a new book item, if the book is yet rated, adds an input to rate it
   bookItem.innerHTML = `
     <div class="book-header">
       <h3 class="book-title">${bookObject.title}</h3>

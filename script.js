@@ -118,6 +118,48 @@ function getGenreKey(genreString) {
 function ruleChatBot(request) {
   let normalized = request.trim().toLowerCase();
 
+  if (pendingBookTitle && pendingBookAuthor && !pendingBookGenre) {
+    let extractedGenre = request.trim();
+    let genreKey = getGenreKey(extractedGenre);
+    if (genreKey) {
+      pendingBookGenre = genreKey;
+      addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
+      appendMessage(
+        `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${genreKey} genre.`
+      );
+      pendingBookTitle = "";
+      pendingBookAuthor = "";
+      pendingBookGenre = "";
+      return true;
+    } else {
+      appendMessage(
+        "Sorry, we don't have that genre in our library. Please choose from: " +
+          Object.values(genreMap).join(", ")
+      );
+      return true;
+    }
+  }
+
+  if (
+    (normalized.startsWith("add") ||
+      normalized.startsWith("i want to add") ||
+      normalized.startsWith("can you add") ||
+      normalized.startsWith("the title is")) &&
+    !normalized.includes("by") &&
+    !normalized.includes("the author is")
+  ) {
+    let titleOnlyMatch = request
+      .trim()
+      .match(
+        /^(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*$/i
+      );
+    if (titleOnlyMatch) {
+      pendingBookTitle = capitalizeWords(titleOnlyMatch[1].trim());
+      appendMessage(`Who is the author of "${pendingBookTitle}"?`);
+      return true;
+    }
+  }
+
   // Adding a book
   let titleMatch = normalized.match(
     /(?:i want to add|add|can you add|the title is)(?: the book| book)? "?([^"]+?)"?(?=\s+(?:by|the author is))/i

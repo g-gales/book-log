@@ -178,7 +178,7 @@ input::placeholder {
   margin: 1rem 0;
 }
 
-label.not-read {
+.not-read {
   font-size: 1.2rem;
   font-style: italic;
   text-align: left;
@@ -228,7 +228,10 @@ label.not-read {
 }
 
 .history {
+  background-color: #fcfcfc;
   padding-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 /* Queries */

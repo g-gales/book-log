@@ -115,6 +115,8 @@ function getGenreKey(genreString) {
   return genreMap[genreKey] ? genreKey : false;
 }
 
+// ---------Chatbot Logic----------
+
 function ruleChatBot(request) {
   const trimmedRequest = request.trim();
   const lowerRequest = trimmedRequest.toLowerCase();
@@ -148,14 +150,13 @@ function ruleChatBot(request) {
     return true;
   }
 
-  // ----- Parsing a new full command -----
   // If the command starts with an add phrase but lacks author indicators
   if (
     (lowerRequest.startsWith("add") ||
       lowerRequest.startsWith("i want to add") ||
       lowerRequest.startsWith("can you add") ||
       lowerRequest.startsWith("the title is")) &&
-    !lowerRequest.includes("by") &&
+    !lowerRequest.includes(" by ") &&
     !lowerRequest.includes("the author is")
   ) {
     let titleOnlyMatch = trimmedRequest.match(
@@ -170,7 +171,8 @@ function ruleChatBot(request) {
 
   // Otherwise, try to parse a full command with title, author, and optionally genre.
   const titleRegex =
-    /(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*(?=by|the author is)/i;
+    /(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*(?=\s+by\b|\s+the author is\b)/i;
+
   const authorRegex =
     /(?:by|the author is)\s*([^"]+?)(?=$|\s+(?:the genre is|it's a|it is a|its a|this falls under))/i;
   const genreRegex =
@@ -184,7 +186,12 @@ function ruleChatBot(request) {
     pendingBookTitle = capitalizeWords(titleMatch[1].trim());
   }
   if (authorMatch) {
-    pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
+    if (authorMatch) {
+      let rawAuthor = authorMatch[1].trim();
+      // Remove a leading "by" if it accidentally remains.
+      rawAuthor = rawAuthor.replace(/^by\s+/i, "");
+      pendingBookAuthor = capitalizeWords(rawAuthor);
+    }
   }
   if (genreMatch) {
     let extractedGenre = genreMatch[1].trim();
@@ -226,10 +233,11 @@ function ruleChatBot(request) {
           titleElement.textContent.toLowerCase() ===
             pendingBookTitle.toLowerCase()
         ) {
+          // Check if the book is already rated.
           let ratingElement = book.querySelector(".read");
           if (ratingElement) {
             appendMessage(
-              `"${pendingBookTitle}" is already read and rated, and it cannot be changed. Please remove the book first, and then add it again it ro re-rate it.`
+              `"${pendingBookTitle}" is already rated. If you'd like to update its rating, please use the edit rating command.`
             );
           } else {
             let bookId = book.id;
@@ -244,12 +252,47 @@ function ruleChatBot(request) {
           found = true;
         }
       });
-      if (!found)
+      if (!found) {
         appendMessage(
           `You haven't added "${pendingBookTitle}" to your bookshelf yet.`
         );
+      }
     } else {
       appendMessage("Ratings must be whole numbers between 1 and 5.");
+    }
+    return true;
+  }
+
+  // Chatbot branch for editing rating.
+  let editRateMatch = lowerRequest.match(
+    /(?:edit rating|update rating)(?: for)?\s*"?([^"]+?)"?\s*(?:to)?\s*(\d)\/5/i
+  );
+  if (editRateMatch) {
+    pendingBookTitle = capitalizeWords(editRateMatch[1].trim());
+    pendingBookRating = parseInt(editRateMatch[2]);
+    let found = false;
+    document.querySelectorAll(".book").forEach((book) => {
+      let titleElement = book.querySelector(".book-title");
+      if (
+        titleElement &&
+        titleElement.textContent.toLowerCase() ===
+          pendingBookTitle.toLowerCase()
+      ) {
+        let bookId = book.id;
+        updateBookRating(bookId, pendingBookRating);
+        appendMessage(
+          `Updated rating for "${pendingBookTitle}" to ${pendingBookRating}/5.`
+        );
+        renderBooks();
+        pendingBookRating = "";
+        pendingBookTitle = "";
+        found = true;
+      }
+    });
+    if (!found) {
+      appendMessage(
+        `The book "${pendingBookTitle}" is not found on your shelf.`
+      );
     }
     return true;
   }
@@ -294,7 +337,8 @@ async function askChatBot(request) {
   appendMessage(result.response.text());
 }
 
-//Render books
+// -----------DOM Rendering and Event Handling----------------
+
 async function renderBooks() {
   const books = await getBooksFromFirestore();
   bookList.innerHTML = "";
@@ -370,24 +414,34 @@ function createBookItem(bookId, bookObject) {
   bookItem.id = bookId;
   bookItem.tabIndex = 0;
   bookItem.classList.add("book");
+
+  let ratingSection = "";
+  if (bookObject.read) {
+    ratingSection = `
+      <p class="read">Rating: ${bookObject.rating}/5</p>
+      <button id="edit-${bookId}" class="edit-rating-btn">Edit Rating</button>
+    `;
+  } else {
+    ratingSection = `
+      <p class="not-read">Submit a Rating When Read</p>
+      <div class="book-rating-input">
+        <input aria-label="Submit a rating when read" name="input-${bookId}" type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" />
+        <button id="submit-${bookId}">I've Read It!</button>
+      </div>
+    `;
+  }
+
   bookItem.innerHTML = `
     <div class="book-header">
       <h3 class="book-title">${bookObject.title}</h3>
       <p class="book-author">By: ${bookObject.author}</p>
     </div>
-    <p class="book-genre"> Genre: ${genreMap[bookObject.genre] || "Unknown"}</p>
-    <div class="book-rating"> ${
-      bookObject.read
-        ? `<p class="read">Rating: ${bookObject.rating}/5</p>`
-        : `<label class="not-read" for="input-${bookId}">Submit a Rating When Read</label>
-        <div class="book-rating-input">
-          <input name="input-${bookId}" type="number" min="1" max="5" placeholder="1-5" id="rate-${bookId}" />
-          <button id="submit-${bookId}">I've Read It!</button>
-        </div>`
-    }
+    <p class="book-genre">Genre: ${genreMap[bookObject.genre] || "Unknown"}</p>
+    <div class="book-rating">
+      ${ratingSection}
     </div>
-    <button id="remove-${bookId}" class="remove-btn">Remove Book</button>`;
-
+    <button id="remove-${bookId}" class="remove-btn">Remove Book</button>
+  `;
   bookList.appendChild(bookItem);
 
   //  adds functionality to new rating button
@@ -404,6 +458,34 @@ function createBookItem(bookId, bookObject) {
         alert("Please enter a valid rating between 1 and 5.");
       }
     });
+  } else {
+    // Set up the Edit Rating button functionality.
+    const editButton = document.getElementById(`edit-${bookId}`);
+    if (editButton) {
+      editButton.addEventListener("click", () => {
+        // Replace the rating display with an input field and a Save button.
+        const ratingDiv = bookItem.querySelector(".book-rating");
+        ratingDiv.innerHTML = `
+          <div class="book-rating-input">
+            <input aria-label="Submit a new rating" type="number" min="1" max="5" placeholder="1-5" id="edit-input-${bookId}" />
+            <button id="save-edit-${bookId}">Save Rating</button>
+          </div>
+        `;
+        document
+          .getElementById(`save-edit-${bookId}`)
+          .addEventListener("click", async () => {
+            const newRating = parseInt(
+              document.getElementById(`edit-input-${bookId}`).value
+            );
+            if (newRating >= 1 && newRating <= 5) {
+              await updateBookRating(bookId, newRating);
+              renderBooks();
+            } else {
+              alert("Please enter a valid rating between 1 and 5.");
+            }
+          });
+      });
+    }
   }
 
   const removeButton = document.getElementById(`remove-${bookId}`);

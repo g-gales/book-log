@@ -124,14 +124,16 @@ function ruleChatBot(request) {
 
   // Adding a book
   let titleMatch = normalized.match(
-    /(?:i want to add|add|can you add|the title is)(?: the book|book)? "?([^\"]+)"?/i
+    /(?:i want to add|add|can you add|the title is)(?: the book| book)? "?([^"]+?)"?(?=\s+(?:by|the author is))/i
   );
-  let authorMatch = normalized.match(/(?:the author is|by) ([^\"]+)/i);
+
+  let authorMatch = normalized.match(/(?:by|the author is) ([^"]+)/i);
+
   let genreMatch = normalized.match(
     /(?:the genre is|it's a|it is a|its a|this falls under) ([\w\s]+) (?:book)?/i
   );
 
-  if (titleMatch) {
+  if (titleMatch || pendingBookTitle) {
     pendingBookTitle = capitalizeWords(titleMatch[1].trim());
     if (!pendingBookAuthor || !authorMatch) {
       appendMessage(`Who is the author of "${pendingBookTitle}"?`);

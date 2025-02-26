@@ -100,7 +100,7 @@ select {
   margin-right: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border 0.3s ease;
 }
 
 input[type="text"]:focus,
@@ -110,7 +110,7 @@ select:hover,
 input[type="number"]:hover,
 input[type="number"]:focus {
   outline: none;
-  border-color: #1c5a8d;
+  border: 3px solid #113d60;
   box-shadow: 0 2px 6px rgba(28, 90, 141, 0.3),
     0 6px 12px rgba(28, 90, 141, 0.15);
 }

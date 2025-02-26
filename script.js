@@ -217,7 +217,7 @@ function ruleChatBot(request) {
   }
 
   // Rate book (only if not already rated)
-  let rateMatch = normalized.match(
+  let rateMatch = lowerRequest.match(
     /(?:rate|i want to rate) "?([^\"]+)"? (?:a )?(\d)\/5/i
   );
   if (rateMatch) {
@@ -298,7 +298,7 @@ function ruleChatBot(request) {
   }
 
   // Remove book
-  let removeMatch = normalized.match(
+  let removeMatch = lowerRequest.match(
     /(?:i want to|remove|delete) (?:the )?book "?([^\"]+)"?/i
   );
   if (removeMatch) {

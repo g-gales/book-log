@@ -116,43 +116,51 @@ function getGenreKey(genreString) {
 }
 
 function ruleChatBot(request) {
-  let normalized = request.trim().toLowerCase();
+  const trimmedRequest = request.trim();
+  const lowerRequest = trimmedRequest.toLowerCase();
 
+  // Waiting for an author: title is set but author is missing.
+  if (pendingBookTitle && !pendingBookAuthor) {
+    pendingBookAuthor = capitalizeWords(trimmedRequest);
+    appendMessage(`What's the genre for "${pendingBookTitle}"?`);
+    return true;
+  }
+
+  // Waiting for a genre: title and author are set but genre is missing.
   if (pendingBookTitle && pendingBookAuthor && !pendingBookGenre) {
-    let extractedGenre = request.trim();
-    let genreKey = getGenreKey(extractedGenre);
+    let genreKey = getGenreKey(trimmedRequest);
     if (genreKey) {
       pendingBookGenre = genreKey;
       addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
       appendMessage(
-        `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${genreKey} genre.`
+        `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${pendingBookGenre} genre.`
       );
+      // Reset pending state.
       pendingBookTitle = "";
       pendingBookAuthor = "";
       pendingBookGenre = "";
-      return true;
     } else {
       appendMessage(
         "Sorry, we don't have that genre in our library. Please choose from: " +
           Object.values(genreMap).join(", ")
       );
-      return true;
     }
+    return true;
   }
 
+  // ----- Parsing a new full command -----
+  // If the command starts with an add phrase but lacks author indicators
   if (
-    (normalized.startsWith("add") ||
-      normalized.startsWith("i want to add") ||
-      normalized.startsWith("can you add") ||
-      normalized.startsWith("the title is")) &&
-    !normalized.includes("by") &&
-    !normalized.includes("the author is")
+    (lowerRequest.startsWith("add") ||
+      lowerRequest.startsWith("i want to add") ||
+      lowerRequest.startsWith("can you add") ||
+      lowerRequest.startsWith("the title is")) &&
+    !lowerRequest.includes("by") &&
+    !lowerRequest.includes("the author is")
   ) {
-    let titleOnlyMatch = request
-      .trim()
-      .match(
-        /^(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*$/i
-      );
+    let titleOnlyMatch = trimmedRequest.match(
+      /^(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*$/
+    );
     if (titleOnlyMatch) {
       pendingBookTitle = capitalizeWords(titleOnlyMatch[1].trim());
       appendMessage(`Who is the author of "${pendingBookTitle}"?`);
@@ -160,52 +168,44 @@ function ruleChatBot(request) {
     }
   }
 
-  // Adding a book
-  let titleMatch = normalized.match(
-    /(?:i want to add|add|can you add|the title is)(?: the book| book)? "?([^"]+?)"?(?=\s+(?:by|the author is))/i
-  );
-  let authorMatch = normalized.match(/(?:by|the author is) ([^"]+)/i);
-  let genreMatch = normalized.match(
-    /(?:the genre is|it's a|it is a|its a|this falls under) ([\w\s]+)(?: book)?/i
-  );
+  // Otherwise, try to parse a full command with title, author, and optionally genre.
+  const titleRegex =
+    /(?:i want to add|add|can you add|the title is)(?: the book| book)?\s*"?([^"]+?)"?\s*(?=by|the author is)/i;
+  const authorRegex =
+    /(?:by|the author is)\s*([^"]+?)(?=$|\s+(?:the genre is|it's a|it is a|its a|this falls under))/i;
+  const genreRegex =
+    /(?:the genre is|it's a|it is a|its a|this falls under)\s*"?([^"]+?)"?\s*$/i;
 
-  if (titleMatch || pendingBookTitle) {
-    if (titleMatch) {
-      pendingBookTitle = capitalizeWords(titleMatch[1].trim());
-    }
-    if (authorMatch) {
-      pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
-    }
-    if (genreMatch) {
-      let extractedGenre = genreMatch[1].trim();
-      pendingBookGenre = getGenreKey(extractedGenre);
-    }
+  let titleMatch = trimmedRequest.match(titleRegex);
+  let authorMatch = trimmedRequest.match(authorRegex);
+  let genreMatch = trimmedRequest.match(genreRegex);
 
+  if (titleMatch) {
+    pendingBookTitle = capitalizeWords(titleMatch[1].trim());
+  }
+  if (authorMatch) {
+    pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
+  }
+  if (genreMatch) {
+    let extractedGenre = genreMatch[1].trim();
+    pendingBookGenre = getGenreKey(extractedGenre);
+  }
+
+  if (pendingBookTitle) {
     if (!pendingBookAuthor) {
       appendMessage(`Who is the author of "${pendingBookTitle}"?`);
-      return true;
     } else if (!pendingBookGenre) {
-      appendMessage(`What's the genre for ${pendingBookTitle}?`);
-      return true;
+      appendMessage(`What's the genre for "${pendingBookTitle}"?`);
     } else {
       addBook(pendingBookTitle, pendingBookAuthor, pendingBookGenre);
       appendMessage(
         `Added "${pendingBookTitle}" by ${pendingBookAuthor} under the ${pendingBookGenre} genre.`
       );
+      // Reset pending values.
+      pendingBookTitle = "";
       pendingBookAuthor = "";
       pendingBookGenre = "";
-      pendingBookTitle = "";
     }
-    return true;
-  } else if (authorMatch || genreMatch) {
-    if (authorMatch) {
-      pendingBookAuthor = capitalizeWords(authorMatch[1].trim());
-    }
-    if (genreMatch) {
-      let extractedGenre = genreMatch[1].trim();
-      pendingBookGenre = getGenreKey(extractedGenre);
-    }
-    appendMessage("I see that you want to add a book, what's the title?");
     return true;
   }
 

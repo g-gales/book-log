@@ -1,13 +1,12 @@
-import { db } from "../js/firebase";
+import { initializeApp } from "firebase/app";
 import {
   doc,
   getDocs,
   getDoc,
   addDoc,
   updateDoc,
+  getFirestore,
   collection,
-  query,
-  where,
 } from "firebase/firestore";
 import log from "loglevel";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -18,7 +17,6 @@ const bookAuthorInput = document.getElementById("bookAuthorInput");
 const bookGenreInput = document.getElementById("bookGenreInput");
 const addBookBtn = document.getElementById("addBookBtn");
 const bookList = document.getElementById("bookList");
-// const signOutBtn = document.getElementById("signOutBtn");
 
 const aiButton = document.getElementById("send-btn");
 const aiInput = document.getElementById("chat-input");
@@ -29,12 +27,6 @@ const chatbotHeader = document.getElementById("chatbot-header");
 var apiKey;
 var genAI;
 var model;
-
-// const email = JSON.parse(localStorage.getItem("email"));
-
-// if (!email) {
-//   window.location.href = "index.html";
-// }
 
 //Chatbot memory variables
 let pendingBookTitle = "";
@@ -53,6 +45,21 @@ const genreMap = {
   selfhelp: "Self Help",
 };
 
+//Firebase
+//Config for Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAVzGsqCJ8E--t-8quYMumYnM2TYTLGtGQ",
+  authDomain: "book-log-fb757.firebaseapp.com",
+  projectId: "book-log-fb757",
+  storageBucket: "book-log-fb757.firebasestorage.app",
+  messagingSenderId: "654188780908",
+  appId: "1:654188780908:web:3900dcbab3d9a5e6456749",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 //Add data to Firebase
 async function addBookToFirestore(bookTitle, bookAuthor, bookGenre) {
   let book = await addDoc(collection(db, "books"), {
@@ -62,15 +69,12 @@ async function addBookToFirestore(bookTitle, bookAuthor, bookGenre) {
     read: false,
     rating: 0,
     removed: false,
-    // email: email,
   });
   return book;
 }
 
 //Fetch books from Firestore when app loads
 async function getBooksFromFirestore() {
-  // let q = query(collection(db, "todos"), where("email", "==", email));
-  // return await getDocs(q);
   var data = await getDocs(collection(db, "books"));
   let userData = [];
   data.forEach((doc) => {
@@ -514,11 +518,6 @@ window.addEventListener("load", () => {
 });
 
 // ----------------- Event Handlers ------------------------
-
-// signOutBtn.addEventListener("click", function (event) {
-//   localStorage.removeItem("email");
-//   window.location.href = "index.html";
-// });
 
 addBookBtn.addEventListener("click", async () => {
   const title = bookTitleInput.value.trim();

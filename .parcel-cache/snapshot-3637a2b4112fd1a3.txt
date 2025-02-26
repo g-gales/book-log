@@ -1,4 +1,4 @@
-22943
+22939
 90C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\base-x133848946509558070 1
 152C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\StringValue.js.map133848946038626552 0
 117C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\storage\dist\esm\storage133848946075277901 1
@@ -42,10 +42,10 @@
 123C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\rimraf\dist\commonjs\rimraf-native.d.ts133848990076286440 0
 146C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\compat\app-check\dist\compat\remote-config\index.d.ts133848946057186025 0
 157C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth\dist\rn\src\core\persistence\persistence_user_manager.d.ts133848946051856459 0
-73C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js133850192339880214 1
+73C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js133850219322680026 1
 120C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@parcel\core\test\fixtures\bundle.js133848946511728630 0
 133C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@opentelemetry\api\build\esm\metrics\NoopMeter.js133848946178358165 0
-81C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\index.html133850212039470404 0
+81C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\index.html133850219582820751 0
 104C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\reusify\package.json133848946271786365 0
 108C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@opentelemetry\api\build133848946174668660 1
 102C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\xtend\package.json133848990073644956 0
@@ -60,7 +60,7 @@
 147C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\firestore\dist\firestore\src\util\async_observer.d.ts133848946046043820 0
 142C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\compat\firestore\dist\compat\analytics\index.d.ts133848946060454066 0
 113C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\functions\README.md133848946033649382 0
-75C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs133850215225203745 1
+75C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs133850219811382716 1
 98C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase-admin133848946178610231 1
 115C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\caniuse-lite\data\regions\SE.js133848946519802672 0
 92C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\posthtml133848946509857860 1
@@ -6044,7 +6044,7 @@
 104C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\async\concatLimit.js133848946272327805 0
 105C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\minipass\package.json133848990074722379 0
 108C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\protobufjs\src\method.js133848946034314751 0
-86C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.html133850215224953270 0
+86C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.html133850219811194343 0
 121C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\remote-config\dist\analytics133848946073603037 1
 111C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\protobufjs\src\namespace.js133848946034493487 0
 123C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\eslint\lib\rules\no-implicit-globals.js133848946984107897 0
@@ -8450,7 +8450,6 @@
 133C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\messaging\sw\dist\esm\compat\performance133848946072354259 1
 118C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\compat\app-check\dist\esm133848946057547440 1
 135C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\analytics\dist\compat\analytics\index.d.ts133848946049997025 0
-93C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.98edab3b.js133850215224999508 0
 106C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\jose\dist\node\esm\jwe133848946177927353 1
 106C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\jose\dist\node\esm\jwt133848946179865394 1
 119C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\gaxios\node_modules\uuid\dist\v4.js133848946176155709 0
@@ -10156,7 +10155,6 @@
 187C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\google-gax\node_modules\@grpc\grpc-js\build\src\generated\grpc\channelz\v1\GetSubchannelResponse.js.map133848946178718212 0
 127C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\messaging\sw\dist\esm\messaging\sw133848946072508551 1
 107C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\glob\dist\esm\walker.js133848990075289102 0
-83C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js\signin.js133850194261455066 0
 186C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\google-gax\node_modules\@grpc\grpc-js\build\src\generated\grpc\channelz\v1\GetTopChannelsResponse.d.ts133848946180266401 0
 184C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\google-gax\node_modules\@grpc\grpc-js\build\src\generated\grpc\channelz\v1\GetTopChannelsResponse.js133848946176210943 0
 129C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\app\dist\esm\auth\cordova\index.d.ts133848946051471602 0
@@ -14793,7 +14791,6 @@
 115C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\auth\dist\messaging\sw133848946055678881 1
 129C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@parcel\reporter-tracer\src\TracerReporter.js133848946509469955 0
 127C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\auth\dist\installations\index.d.ts133848946055658188 0
-97C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.98edab3b.js.map133850215225198505 0
 116C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\auth\dist\esm\app-check133848946055318514 1
 113C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\auth\dist\esm\compat133848946078092266 1
 119C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\firebase\auth\dist\esm\data-connect133848946055479750 1
@@ -21569,7 +21566,7 @@
 155C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\esm\auth-compat\src\popup_redirect.test.d.ts133848946036765604 0
 154C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\esm\auth-compat\src\recaptcha_verifier.d.ts133848946036833232 0
 151C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\esm\auth-compat\src\user_credential.d.ts133848946036936747 0
-98C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.0e59adf1.css.map133850215225177704 0
+98C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.0e59adf1.css.map133850219811242597 0
 140C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\esm\auth-compat\src\wrap.d.ts133848946037079264 0
 130C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\auth-compat\scripts133848946036843285 1
 127C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\@firebase\auth-compat\dist\auth-compat\test133848946035956903 1
@@ -22937,8 +22934,7 @@
 99C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\.bin\sha.js.cmd133848990076408086 0
 93C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\.bin\uuid133848946182088992 0
 97C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\node_modules\.bin\uuid.cmd133848946182088992 0
-85C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js\firebase.js133850215011047206 0
-83C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js\script.js133850215154000614 0
-94C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.0e59adf1.css133850215224994345 0
-93C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.6f7063aa.js133850215224994345 0
-97C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.6f7063aa.js.map133850215225177704 0
+83C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\js\script.js133850218982305127 0
+94C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.0e59adf1.css133850219811221231 0
+93C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.4d592955.js133850219811226746 0
+97C:\Users\ggale\OneDrive\Documents\IWD2\WDT\Website Assignment\Book-Log\docs\index.4d592955.js.map133850219811377433 0
